@@ -1,1 +1,3 @@
 /regis-collection/documents-json
+/node_modules
+yarn.lock

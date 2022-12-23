@@ -1,0 +1,21 @@
+{
+  "name": "top-ri-trab-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "repository": "https://github.com/DaniSald/top-ri-trab-1.git",
+  "author": "DaniSald <dmss@icomp.ufam.edu.br>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.5.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/elasticsearch": "^5.0.40",
+    "@types/express": "^4.17.15",
+    "nodemon": "^2.0.20"
+  }
+}

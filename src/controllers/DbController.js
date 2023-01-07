@@ -11,47 +11,50 @@ class DbController {
         const dirName = "./regis-collection/documents-json"
         const jsonFilesDir = opendirSync(resolve(dirName))
         const esClient = getClient()
+        let i = 1
 
-        for await (const entry of jsonFilesDir) {
-            jsonfile.readFile(join(dirName, entry.name), 'utf8', async (err, doc) => {
-                if (err) {
-                    console.error(err)
-                    return res.status(400).json({ error: err })
+        try {
+            for await (const entry of jsonFilesDir) {
+                jsonfile.readFile(join(dirName, entry.name), 'utf8', async (err, doc) => {
+                    if (err) {
+                        console.error(err)
+                        return res.status(400).json({ error: err })
+                    }
+
+                    await esClient.index({
+                        index: "regis-docs",
+                        document: doc,
+            
+                    }).then((body) => console.log(`${(i * 100) / 21444} % ${body.result}`))
+                    .catch((err) => console.error(err))
+                })
+
+                if (i >= 21444) {
+                    console.log("finish indexing");
+                    break
+                } else {
+                    i++
                 }
+            }
 
-                await esClient.index({
-                    index: "regis-docs",
-                    document: doc,
-        
-                }).then((body) => console.log(`${entry.name} ${body.result}`))
-                .catch((err) => console.error(err))
-
-                
-
-               
-                // await rp({
-                //     url: "http://localhost:9200/regis-docs/_doc",
-                //     method: "POST",
-                //     json: true,
-                //     body: doc
-                // }).then(function (body) {
-                //     console.log("success");
-                // })
-                // .catch(function (err) {
-                //     console.error("fail");
-                // })
-            })
+            return res.json({status: 200})
+        } catch(err) {
+            return res.send(err)
         }
+    }
 
-        console.log("aqui");
+    async refreshDb(req, res) {
+        try {
+            await getClient().indices.refresh({
+                index: "regis-docs",
+            })
 
-        await esClient.indices.refresh({
-            index: "regis-docs",
-        })
+            return res.json({status: 200})
+        } catch (e) {
+            console.error(e)
 
-        console.log("aqui 2");
-
-        return res.status(200)
+            return res.json({status: 500})
+        }
     }
 }
 

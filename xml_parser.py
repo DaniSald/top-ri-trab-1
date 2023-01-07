@@ -16,7 +16,7 @@ def parse_xml_to_json(path, xml_file):
 	root = tree.getroot()
 	
 	for field in root.iter('field'):
-		text = field.text.replace("\"", "")[:10000]
+		text = field.text.replace("\"", "")[:30000]
 		name = field.get('name')
 		
 		doc_content[name] = text

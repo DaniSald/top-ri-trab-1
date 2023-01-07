@@ -7,6 +7,10 @@ dotenv.config()
 
 const app = express()
 
+const port = process.env.PORT || 7890
+
 app.get('/index-js', DbController.indexFromJsFiles)
 
-app.listen(7890, () => console.log("api up"))
+app.get('/refresh', DbController.refreshDb)
+
+app.listen(port, () => console.log(`listening to port ${port}`))

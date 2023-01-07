@@ -1,10 +1,8 @@
-'use strict'
-
 import { Client } from "@elastic/elasticsearch"
 
 const getClient = () => {
     const client = new Client({
-        node: 'http://localhost:9200',
+        node: process.env.ES_HOST,
         log: 'trace'
     })
 

@@ -7,11 +7,16 @@
   "author": "DaniSald <dmss@icomp.ufam.edu.br>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon --max-old-space-size=8192 src/server.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.5.0",
-    "express": "^4.18.2"
+    "delay": "^5.0.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonfile": "^6.1.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
     "@types/elasticsearch": "^5.0.40",

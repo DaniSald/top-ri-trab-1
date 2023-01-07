@@ -9,6 +9,8 @@ const app = express()
 
 const port = process.env.PORT || 7890
 
+app.get('/', (req, res) => res.json({status: 200}))
+
 app.get('/index-js', DbController.indexFromJsFiles)
 
 app.get('/refresh', DbController.refreshDb)

@@ -24,6 +24,7 @@ class DbController {
                     await esClient.index({
                         index: "regis-docs",
                         document: doc,
+                        
             
                     }).then((body) => console.log(`${(i * 100) / 21444} % ${body.result}`))
                     .catch((err) => console.error(err))
@@ -53,7 +54,28 @@ class DbController {
         } catch (e) {
             console.error(e)
 
-            return res.json({status: 500})
+            return res.json({status: 500, error: e})
+        }
+    }
+
+    async search(req, res) {
+        const { query } = req.query
+
+        try {
+            const data = await getClient().search({
+                index: "regis-docs",
+                query: {
+                    match_phrase: {
+                        text: query,
+                    },
+                }
+            })
+
+            return res.json(data)
+        } catch (e) {
+            console.error(e)
+
+            return res.json({status: 400, error: e})
         }
     }
 }

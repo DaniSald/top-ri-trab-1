@@ -15,4 +15,6 @@ app.get('/index-js', DbController.indexFromJsFiles)
 
 app.get('/refresh', DbController.refreshDb)
 
+app.get('/search', DbController.search)
+
 app.listen(port, () => console.log(`listening to port ${port}`))

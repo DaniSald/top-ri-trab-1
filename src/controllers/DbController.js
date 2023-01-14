@@ -68,15 +68,50 @@ class DbController {
                     match_phrase: {
                         text: query,
                     },
-                }
+                },
+                size: 10000
             })
 
-            return res.json(data)
+            const response = {total: data.hits.total.value, results: []}
+
+            for await(const hit of data.hits.hits) {
+                const result = {
+                    _id: hit._id,
+                    _score: hit._score,
+                    docid: hit._source.docid,
+                    filename: hit._source.filename
+                }
+
+                response.results.push(result)
+            }
+
+            return res.json(response)
         } catch (e) {
             console.error(e)
 
             return res.json({status: 400, error: e})
         }
+    }
+
+    async searchById(req, res) {
+        try {
+            const { id } = req.params
+
+            const data = await getClient().search({
+                index: "regis-docs",
+                query: {
+                    term: {
+                        _id: id
+                    }
+                }
+            })
+
+            return res.json(data.hits.hits[0])
+        } catch (e) {
+            console.error(e)
+
+            return res.json({status: 400, error: e})
+        }   
     }
 }
 

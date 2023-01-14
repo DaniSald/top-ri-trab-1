@@ -17,4 +17,6 @@ app.get('/refresh', DbController.refreshDb)
 
 app.get('/search', DbController.search)
 
+app.get('/doc/:id', DbController.searchById)
+
 app.listen(port, () => console.log(`listening to port ${port}`))

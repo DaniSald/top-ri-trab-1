@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hide and Seek</title>
+    <style>
+      
+    </style>
+  </head>
+  <body>
+    <h1>Hide and Seek</h1>
+    <form>
+      <input type="text" id="search-input" placeholder="Buscar...">
+      <button type="submit" id="search-button">Buscar</button>
+    </form>
+    <div id="search-results"></div>
+    <script>
+     
+      const searchButton = document.getElementById("search-button");
+      const searchResults = document.getElementById("search-results");
+      searchButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        const searchTerm = document.getElementById("search-input").value;
+        
+      });
+    </script>
+  </body>
+</html>

@@ -2,7 +2,7 @@ import { Client } from "@elastic/elasticsearch"
 
 const getClient = () => {
     const client = new Client({
-        node: process.env.ES_HOST,
+        node: "http://localhost:9200",
         log: 'trace'
     })
 

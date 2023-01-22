@@ -24,8 +24,7 @@ class DbController {
                     await esClient.index({
                         index: "regis-docs",
                         document: doc,
-                        
-            
+                        id: doc.docid
                     }).then((body) => console.log(`${(i * 100) / 21444} % ${body.result}`))
                     .catch((err) => console.error(err))
                 })
@@ -72,12 +71,13 @@ class DbController {
                 size: 10000
             })
 
-            if (!data.hits.hits) {
+            if (data.hits.hits.length == 0) {
                 data = await getClient().search({
                     index: "regis-docs",
                     query: {
-                        match: {
-                            text: query,
+                        multi_match: {
+                            query,
+                            fields: ["text", "filename"]
                         },
                     },
                     size: 10000

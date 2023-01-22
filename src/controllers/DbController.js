@@ -1,4 +1,4 @@
-import { opendirSync } from 'fs'
+import { fdatasync, opendirSync } from 'fs'
 import fs from 'fs'
 import rp from 'request-promise'
 import request from 'request'
@@ -62,7 +62,7 @@ class DbController {
         const { query } = req.query
 
         try {
-            const data = await getClient().search({
+            let data = await getClient().search({
                 index: "regis-docs",
                 query: {
                     match_phrase: {
@@ -71,6 +71,18 @@ class DbController {
                 },
                 size: 10000
             })
+
+            if (!data.hits.hits) {
+                data = await getClient().search({
+                    index: "regis-docs",
+                    query: {
+                        match: {
+                            text: query,
+                        },
+                    },
+                    size: 10000
+                })
+            }
 
             const response = {total: data.hits.total.value, results: []}
 

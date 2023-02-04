@@ -2,12 +2,14 @@ import express, { request } from "express"
 import getClient from "./client/elasticsearch.js"
 import dotenv from 'dotenv'
 import DbController from "./controllers/DbController.js"
+import cors from 'cors'
 
 dotenv.config()
 
 const app = express()
-
 const port = process.env.PORT || 7890
+
+app.use(cors())
 
 app.get('/', (req, res) => res.json({status: 200}))
 

@@ -3,7 +3,7 @@ import fs from 'fs'
 import rp from 'request-promise'
 import request from 'request'
 import jsonfile from 'jsonfile'
-import { resolve, join}  from 'path'
+import { resolve, join } from 'path'
 import getClient from '../client/elasticsearch.js'
 
 class DbController {
@@ -26,7 +26,7 @@ class DbController {
                         document: doc,
                         id: doc.docid
                     }).then((body) => console.log(`${(i * 100) / 21444} % ${body.result}`))
-                    .catch((err) => console.error(err))
+                        .catch((err) => console.error(err))
                 })
 
                 if (i >= 21444) {
@@ -37,8 +37,8 @@ class DbController {
                 }
             }
 
-            return res.json({status: 200})
-        } catch(err) {
+            return res.json({ status: 200 })
+        } catch (err) {
             return res.send(err)
         }
     }
@@ -49,17 +49,18 @@ class DbController {
                 index: "regis-docs",
             })
 
-            return res.json({status: 200})
+            return res.json({ status: 200 })
         } catch (e) {
             console.error(e)
 
-            return res.json({status: 500, error: e})
+            return res.json({ status: 500, error: e })
         }
     }
 
     async search(req, res) {
         const { query } = req.query
-
+        let dcg = 0
+        let i = 0
         try {
             let data = await getClient().search({
                 index: "regis-docs",
@@ -84,24 +85,27 @@ class DbController {
                 })
             }
 
-            const response = {total: data.hits.total.value, results: []}
+            const response = { total: data.hits.total.value, dcg: [], results: [] }
 
-            for await(const hit of data.hits.hits) {
+            for await (const hit of data.hits.hits) {
+                i++
+                dcg = dcg + (hit._score / Math.log2(i + 1))
                 const result = {
                     _id: hit._id,
                     _score: hit._score,
                     docid: hit._source.docid,
-                    filename: hit._source.filename
+                    filename: hit._source.filename,
                 }
 
                 response.results.push(result)
             }
+            response.dcg.push(dcg)
 
             return res.json(response)
         } catch (e) {
             console.error(e)
 
-            return res.json({status: 400, error: e})
+            return res.json({ status: 400, error: e })
         }
     }
 
@@ -122,8 +126,8 @@ class DbController {
         } catch (e) {
             console.error(e)
 
-            return res.json({status: 400, error: e})
-        }   
+            return res.json({ status: 400, error: e })
+        }
     }
 }
 

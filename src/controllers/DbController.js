@@ -85,7 +85,7 @@ class DbController {
                 })
             }
 
-            const response = { total: data.hits.total.value, dcg: [], results: [] }
+            const response = { dcg: 0, results: [] }
 
             for await (const hit of data.hits.hits) {
                 i++
@@ -99,7 +99,7 @@ class DbController {
 
                 response.results.push(result)
             }
-            response.dcg.push(dcg)
+            response.dcg = dcg
 
             return res.json(response)
         } catch (e) {

@@ -8,6 +8,10 @@ import math
 xml_path = "./regis-collection/queries.xml"
 txt_path = "./regis-collection/qrels.txt"
 
+query = "História da geoquímica na Petrobras"
+tamanho = 100
+dcg = 47.18569448169033
+
 
 def get_query_number(title):
     qnum = ''
@@ -25,7 +29,7 @@ def get_query_number(title):
     return qnum
 
 
-def calc_idcg(qnum, tam):
+def calc_ndcg(qnum, tam, dcg):
     scores = []
     file = open(txt_path, "r")
     lines = file.readlines()
@@ -46,12 +50,15 @@ def calc_idcg(qnum, tam):
         if count < tam:
             idcg = idcg + (int(score)/math.log2(count + 1))
         count += 1
-    print(idcg)
+
+    result = dcg / idcg
+
+    print(result)
 
 
 def main():
-    qnum = get_query_number('História da geoquímica na Petrobras')
-    calc_idcg(qnum, 10)
+    qnum = get_query_number(query)
+    calc_ndcg(qnum, tamanho, dcg)
 
 
 if __name__ == "__main__":

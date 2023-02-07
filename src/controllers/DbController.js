@@ -69,7 +69,7 @@ class DbController {
                         text: query,
                     },
                 },
-                size: 10000
+                size: 50
             })
 
             if (data.hits.hits.length == 0) {
@@ -81,7 +81,7 @@ class DbController {
                             fields: ["text", "filename"]
                         },
                     },
-                    size: 10000
+                    size: 50
                 })
             }
 

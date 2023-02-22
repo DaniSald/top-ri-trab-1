@@ -35,14 +35,12 @@ def calc_ndcg(qnum, tam, dcg):
     lines = file.readlines()
 
     for line in lines:
-        if line[3] != " ":
-            if line[:3] == qnum:
-                scores.append(line[-2])
-            elif line[:2] == qnum:
-                scores.append(line[-2])
+        query_avaliada = line.replace("\n", "").split(" ")
+
+        if query_avaliada[0] == qnum:
+            scores.append(query_avaliada[-1])
 
     scores.sort(reverse=True)
-    # print(scores)
 
     count = 1
     idcg = 0

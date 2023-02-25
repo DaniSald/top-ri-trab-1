@@ -3,6 +3,7 @@ import getClient from "./client/elasticsearch.js"
 import dotenv from 'dotenv'
 import DbController from "./controllers/DbController.js"
 import cors from 'cors'
+import DbControllerNew from "./controllers/DbControllerNew.js"
 
 dotenv.config()
 
@@ -20,6 +21,10 @@ app.get('/refresh', DbController.refreshDb)
 app.get('/search', DbController.search)
 
 app.get('/ndcg', DbController.ndcg)
+
+app.get('/search/new', DbControllerNew.search)
+
+app.get('/ndcg/new', DbControllerNew.ndcg)
 
 app.get('/doc/:id', DbController.searchById)
 
